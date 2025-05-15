@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useUpdatePassword } from "@refinedev/core";
-import { supabaseClient } from "../../utility";
-import { useLocation } from "react-router";
 
 export const UpdatePassword = () => {
   const [password, setPassword] = useState("");
@@ -10,30 +8,6 @@ export const UpdatePassword = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { mutate, isLoading } = useUpdatePassword();
-  const location = useLocation();
-
-  useEffect(() => {
-    const hash = location.hash;
-    if (hash && hash.includes("access_token")) {
-      const params = new URLSearchParams(hash.replace("#", ""));
-      const access_token = params.get("access_token");
-      if (access_token) {
-        supabaseClient.auth
-          .setSession({
-            access_token,
-            refresh_token: "",
-          })
-          .then(({ error }) => {
-            if (!error) setError("Sesión inválida o expirada.");
-            else setError("Sesión inválida o expirada.");
-          });
-      } else {
-        setError("Token de acceso no encontrado.");
-      }
-    } else {
-      setError("No se encontró token de recuperación en la URL.");
-    }
-  }, [location]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

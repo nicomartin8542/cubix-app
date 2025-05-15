@@ -1,10 +1,12 @@
-import { type GetManyResponse, useMany, useNavigation } from "@refinedev/core";
+import { useNavigation } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
-import { type ColumnDef, flexRender } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 import React from "react";
 
 export const EmpleadosList = () => {
-  const columns = React.useMemo<ColumnDef<any>[]>(
+  const { edit, show, create } = useNavigation();
+
+  const columns = React.useMemo(
     () => [
       {
         id: "id",
@@ -12,149 +14,63 @@ export const EmpleadosList = () => {
         header: "ID",
       },
       {
-        id: "title",
-        accessorKey: "title",
-        header: "Title",
+        id: "ape_nom",
+        accessorKey: "ape_nom",
+        header: "Apellido y Nombre",
       },
       {
-        id: "content",
-        accessorKey: "content",
-        header: "Content",
+        id: "nro_cuil",
+        accessorKey: "nro_cuil",
+        header: "CUIL",
       },
       {
-        id: "category",
-        header: "Category",
-        accessorKey: "categories",
-        cell: function render({ getValue, table }) {
-          const meta = table.options.meta as {
-            categoryData: GetManyResponse;
-          };
-
-          try {
-            const category = meta.categoryData?.data?.find(
-              (item) => item.id == getValue<any>()?.id
-            );
-
-            return category?.title ?? "Loading...";
-          } catch (error) {
-            return null;
-          }
-        },
+        id: "email",
+        accessorKey: "email",
+        header: "Email",
       },
       {
         id: "status",
         accessorKey: "status",
-        header: "Status",
-      },
-      {
-        id: "createdAt",
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: function render({ getValue }) {
-          return new Date(getValue<any>()).toLocaleString(undefined, {
-            timeZone: "UTC",
-          });
-        },
-      },
-      {
-        id: "actions",
-        accessorKey: "id",
-        header: "Actions",
-        cell: function render({ getValue }) {
-          return (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: "4px",
-              }}
-            >
-              <button
-                onClick={() => {
-                  show("blog_posts", getValue() as string);
-                }}
-              >
-                Show
-              </button>
-              <button
-                onClick={() => {
-                  edit("blog_posts", getValue() as string);
-                }}
-              >
-                Edit
-              </button>
-            </div>
-          );
-        },
+        header: "Estado",
       },
     ],
     []
   );
 
-  const { edit, show, create } = useNavigation();
-
   const {
     getHeaderGroups,
     getRowModel,
-    setOptions,
     refineCore: {
       tableQuery: { data: tableData },
     },
-    getState,
-    setPageIndex,
-    getCanPreviousPage,
-    getPageCount,
-    getCanNextPage,
-    nextPage,
-    previousPage,
-    setPageSize,
   } = useTable({
     columns,
     refineCoreProps: {
-      meta: {
-        select: "*, categories(id,title)",
-      },
+      resource: "empleados",
     },
   });
-
-  const { data: categoryData } = useMany({
-    resource: "categories",
-    ids:
-      tableData?.data?.map((item) => item?.categories?.id).filter(Boolean) ??
-      [],
-    queryOptions: {
-      enabled: !!tableData?.data,
-    },
-  });
-
-  setOptions((prev) => ({
-    ...prev,
-    meta: {
-      ...prev.meta,
-      categoryData,
-    },
-  }));
 
   return (
-    <div style={{ padding: "16px" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <h1>{"List"}</h1>
-        <button onClick={() => create("blog_posts")}>{"Create"}</button>
+    <div className="bg-white rounded-xl shadow p-6 w-full">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-indigo-700">Empleados</h2>
+        <button
+          onClick={() => create("empleados")}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition"
+        >
+          Crear
+        </button>
       </div>
-      <div style={{ maxWidth: "100%", overflowY: "scroll" }}>
-        <table>
-          <thead>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-indigo-100">
+          <thead className="bg-indigo-50">
             {getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id}>
+                  <th
+                    key={header.id}
+                    className="px-4 py-3 text-left text-xs font-semibold text-indigo-700 uppercase tracking-wider"
+                  >
                     {!header.isPlaceholder &&
                       flexRender(
                         header.column.columnDef.header,
@@ -162,71 +78,43 @@ export const EmpleadosList = () => {
                       )}
                   </th>
                 ))}
+                <th className="px-4 py-3 text-left text-xs font-semibold text-indigo-700 uppercase tracking-wider">Acciones</th>
               </tr>
             ))}
           </thead>
-          <tbody>
+          <tbody className="bg-white divide-y divide-indigo-50">
             {getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr key={row.id} className="hover:bg-indigo-50">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td key={cell.id} className="px-4 py-2 whitespace-nowrap">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
+                <td className="px-4 py-2 whitespace-nowrap flex gap-2">
+                  <button
+                    onClick={() => {
+                      const id = row.original.id;
+                      if (id !== undefined) show("empleados", id);
+                    }}
+                    className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-semibold py-1 px-3 rounded-lg transition"
+                  >
+                    Ver detalles
+                  </button>
+                  <button
+                    onClick={() => {
+                      const id = row.original.id;
+                      if (id !== undefined) edit("empleados", id);
+                    }}
+                    className="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold py-1 px-3 rounded-lg border border-indigo-200 transition"
+                  >
+                    Modificar
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div style={{ marginTop: "12px" }}>
-        <button
-          onClick={() => setPageIndex(0)}
-          disabled={!getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button onClick={() => previousPage()} disabled={!getCanPreviousPage()}>
-          {"<"}
-        </button>
-        <button onClick={() => nextPage()} disabled={!getCanNextPage()}>
-          {">"}
-        </button>
-        <button
-          onClick={() => setPageIndex(getPageCount() - 1)}
-          disabled={!getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <span>
-          <strong>
-            {" "}
-            {getState().pagination.pageIndex + 1} / {getPageCount()}{" "}
-          </strong>
-        </span>
-        <span>
-          | {"Go"}:{" "}
-          <input
-            type="number"
-            defaultValue={getState().pagination.pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              setPageIndex(page);
-            }}
-          />
-        </span>{" "}
-        <select
-          value={getState().pagination.pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {"Show"} {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
     </div>
   );
-};
+}

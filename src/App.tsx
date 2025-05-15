@@ -6,7 +6,7 @@ import authProvider from "./providers/authProvider";
 import routerBindings, { CatchAllNavigate } from "@refinedev/react-router";
 import { RefineKbarProvider } from "@refinedev/kbar";
 import { DevtoolsProvider } from "@refinedev/devtools";
-import { Layout } from "./components/layout";
+import { Layout } from "./layout";
 import { resources } from "./config/resources";
 import { AppRoutes } from "./routes/AppRoutes";
 import "./App.css";

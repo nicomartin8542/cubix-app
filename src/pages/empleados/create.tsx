@@ -1,7 +1,7 @@
 import { useNavigation, useSelect } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 
-export const BlogPostCreate = () => {
+export const EmpleadosCreate = () => {
   const { list } = useNavigation();
 
   const {
@@ -22,7 +22,7 @@ export const BlogPostCreate = () => {
         <div>
           <button
             onClick={() => {
-              list("blog_posts");
+              list("empleados");
             }}
           >
             List

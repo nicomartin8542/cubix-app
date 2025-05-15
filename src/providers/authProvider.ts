@@ -1,6 +1,6 @@
 import { AuthProvider } from "@refinedev/core";
 
-import { supabaseClient } from "./utility";
+import { supabaseClient } from "../utility";
 
 const authProvider: AuthProvider = {
   login: async ({ email, password, providerName }) => {
@@ -150,8 +150,10 @@ const authProvider: AuthProvider = {
         };
       }
     } catch (error: any) {
+      console.log(error);
       return {
         success: false,
+
         error,
       };
     }

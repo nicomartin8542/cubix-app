@@ -3,7 +3,7 @@ import { useTable } from "@refinedev/react-table";
 import { type ColumnDef, flexRender } from "@tanstack/react-table";
 import React from "react";
 
-export const BlogPostList = () => {
+export const EmpleadosList = () => {
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -99,7 +99,7 @@ export const BlogPostList = () => {
     getRowModel,
     setOptions,
     refineCore: {
-      tableQueryResult: { data: tableData },
+      tableQuery: { data: tableData },
     },
     getState,
     setPageIndex,

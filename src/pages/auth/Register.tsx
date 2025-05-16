@@ -25,10 +25,6 @@ const Register = () => {
     });
   };
 
-  if (isLoading) {
-    return <div>Registrando...</div>;
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 md:p-10">
@@ -36,6 +32,30 @@ const Register = () => {
           Crear cuenta
         </h2>
         <form className="space-y-5" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nombre completo
+            </label>
+            <input
+              type="text"
+              name="name"
+              className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+              placeholder="Tu nombre"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              DNI
+            </label>
+            <input
+              type="text"
+              name="dni"
+              className="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+              placeholder="Tu DNI"
+              required
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Correo electrónico
@@ -170,9 +190,12 @@ const Register = () => {
           )}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition text-lg"
+            disabled={isLoading}
+            className={`w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition text-lg ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Registrarse
+            {isLoading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
         <div className="flex justify-between mt-5 text-sm">

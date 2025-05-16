@@ -2,6 +2,7 @@ import type { PropsWithChildren } from "react";
 import React, { useState } from "react";
 import { Sidebar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
+import { useGetIdentity } from "@refinedev/core";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   // Simulación de usuario, reemplazar por datos reales de Refine/Auth cuando esté disponible

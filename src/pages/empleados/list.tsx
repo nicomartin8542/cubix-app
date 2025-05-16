@@ -1,41 +1,13 @@
-import { useNavigation } from "@refinedev/core";
+import { useMany, useNavigation } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
 import React from "react";
+import { ViewIcon } from "../../components/icons/ViewIcon";
+import { UpdateIcon } from "../../components/icons/UpdateIcon";
+import { columnListEmpleados } from "../../config/columnList";
 
 export const EmpleadosList = () => {
   const { edit, show, create } = useNavigation();
-
-  const columns = React.useMemo(
-    () => [
-      {
-        id: "id",
-        accessorKey: "id",
-        header: "ID",
-      },
-      {
-        id: "ape_nom",
-        accessorKey: "ape_nom",
-        header: "Apellido y Nombre",
-      },
-      {
-        id: "nro_cuil",
-        accessorKey: "nro_cuil",
-        header: "CUIL",
-      },
-      {
-        id: "email",
-        accessorKey: "email",
-        header: "Email",
-      },
-      {
-        id: "status",
-        accessorKey: "status",
-        header: "Estado",
-      },
-    ],
-    []
-  );
 
   const {
     getHeaderGroups,
@@ -44,16 +16,37 @@ export const EmpleadosList = () => {
       tableQuery: { data: tableData },
     },
   } = useTable({
-    columns,
+    columns: columnListEmpleados,
     refineCoreProps: {
       resource: "empleados",
     },
   });
 
+  const institucionIds = getRowModel()
+    .rows.map((row) => row.original.instituciones_id?.toString())
+    .filter((id): id is string => !!id);
+
+  const { data: institucionesData } = useMany({
+    resource: "instituciones",
+    ids: institucionIds,
+  });
+
+  // Obtener el nombre de la empresa (institución) para mostrar en el header
+  let empresaNombre = "";
+  if (
+    institucionesData &&
+    institucionesData.data &&
+    institucionesData.data.length > 0
+  ) {
+    empresaNombre = institucionesData.data[0].descripcion || "";
+  }
+
   return (
     <div className="bg-white rounded-xl shadow p-6 w-full">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-indigo-700">Empleados</h2>
+        <h2 className="text-2xl font-bold text-indigo-700">
+          Empleados{empresaNombre ? ` - ${empresaNombre}` : ""}
+        </h2>
         <button
           onClick={() => create("empleados")}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition"
@@ -78,7 +71,9 @@ export const EmpleadosList = () => {
                       )}
                   </th>
                 ))}
-                <th className="px-4 py-3 text-left text-xs font-semibold text-indigo-700 uppercase tracking-wider">Acciones</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-indigo-700 uppercase tracking-wider">
+                  Acciones
+                </th>
               </tr>
             ))}
           </thead>
@@ -92,22 +87,25 @@ export const EmpleadosList = () => {
                 ))}
                 <td className="px-4 py-2 whitespace-nowrap flex gap-2">
                   <button
+                    className="text-blue-600 hover:text-blue-900 mr-2"
                     onClick={() => {
                       const id = row.original.id;
+
                       if (id !== undefined) show("empleados", id);
                     }}
-                    className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-semibold py-1 px-3 rounded-lg transition"
+                    title="Ver detalle"
                   >
-                    Ver detalles
+                    <ViewIcon />
                   </button>
                   <button
+                    className="text-blue-600 hover:text-blue-900"
                     onClick={() => {
                       const id = row.original.id;
                       if (id !== undefined) edit("empleados", id);
                     }}
-                    className="bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-semibold py-1 px-3 rounded-lg border border-indigo-200 transition"
+                    title="Actualizar"
                   >
-                    Modificar
+                    <UpdateIcon />
                   </button>
                 </td>
               </tr>
@@ -117,4 +115,4 @@ export const EmpleadosList = () => {
       </div>
     </div>
   );
-}
+};

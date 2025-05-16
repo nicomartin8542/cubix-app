@@ -15,7 +15,7 @@ const Login = () => {
     mutate(data, {
       onSuccess: (data: any) => {
         if (!data?.success) {
-          toast.error(data?.message || "Error al iniciar sesión");
+          toast.error(data?.error?.message || "Error al iniciar sesión");
         }
       },
     });

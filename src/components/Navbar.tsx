@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useLogout } from "@refinedev/core";
 
 interface NavbarProps {
   user: {
@@ -10,6 +11,8 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ user }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const { mutate } = useLogout();
 
   // Cierra el menú si se hace click fuera
   React.useEffect(() => {
@@ -50,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user }) => {
               <button
                 className="block w-full text-left px-4 py-2 hover:bg-indigo-50 hover:text-indigo-700 text-indigo-600"
                 onClick={() => {
-                  /* logout aquí */
+                  mutate();
                 }}
               >
                 Logout

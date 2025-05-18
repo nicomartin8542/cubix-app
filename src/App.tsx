@@ -1,16 +1,19 @@
+// Importaciones agrupadas
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import { Authenticated, Refine } from "@refinedev/core";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
-import { supabaseClient } from "./utility";
-import authProvider from "./providers/authProvider";
-import routerBindings, { CatchAllNavigate } from "@refinedev/react-router";
 import { RefineKbarProvider } from "@refinedev/kbar";
 import { DevtoolsProvider } from "@refinedev/devtools";
+import routerBindings, { CatchAllNavigate } from "@refinedev/react-router";
+
+// Importaciones locales
+import { supabaseClient } from "./utility";
+import authProvider from "./providers/authProvider";
 import { Layout } from "./layout";
 import { resources } from "./config/resources";
-import { AppRoutes } from "./routes/AppRoutes";
+import { AppRoutes, AuthRoutes } from "./routes";
+import { ROUTES } from "./routes/constants";
 import "./App.css";
-import { AuthRoutes } from "./routes/AuthRoutes";
 
 function App() {
   return (
@@ -35,7 +38,7 @@ function App() {
                 element={
                   <Authenticated
                     key="authenticated-inner"
-                    fallback={<CatchAllNavigate to="/login" />}
+                    fallback={<CatchAllNavigate to={ROUTES.LOGIN} />}
                   >
                     <Layout>
                       <Outlet />

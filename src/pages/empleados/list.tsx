@@ -5,6 +5,7 @@ import React from "react";
 import { ViewIcon } from "../../components/icons/ViewIcon";
 import { UpdateIcon } from "../../components/icons/UpdateIcon";
 import { columnListEmpleados } from "../../config/columnList";
+import { Spinner } from "../../components/Spinner";
 
 export const EmpleadosList = () => {
   const { edit, show, create } = useNavigation();
@@ -13,7 +14,7 @@ export const EmpleadosList = () => {
     getHeaderGroups,
     getRowModel,
     refineCore: {
-      tableQuery: { data: tableData },
+      tableQuery: { data: tableData, isLoading },
     },
   } = useTable({
     columns: columnListEmpleados,
@@ -41,7 +42,9 @@ export const EmpleadosList = () => {
     empresaNombre = institucionesData.data[0].descripcion || "";
   }
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <div className="bg-white rounded-xl shadow p-6 w-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-indigo-700">

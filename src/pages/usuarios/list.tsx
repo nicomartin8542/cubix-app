@@ -3,22 +3,22 @@ import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { ViewIcon } from "@components/icons/ViewIcon";
 import { UpdateIcon } from "@components/icons/UpdateIcon";
-import { columnListEmpleados } from "@/config/columnList";
+import { columnListUsuarios } from "@/config/columnList";
 import { Spinner } from "@/components/ui/Spinner";
 
-export const EmpleadosList = () => {
+export const UsuariosList = () => {
   const { edit, show, create } = useNavigation();
 
   const {
     getHeaderGroups,
     getRowModel,
     refineCore: {
-      tableQuery: { data: tableData, isLoading },
+      tableQuery: { isLoading },
     },
   } = useTable({
-    columns: columnListEmpleados,
+    columns: columnListUsuarios,
     refineCoreProps: {
-      resource: "empleados",
+      resource: "users",
     },
   });
 
@@ -47,10 +47,10 @@ export const EmpleadosList = () => {
     <div className="bg-white rounded-xl shadow p-6 w-full">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-indigo-700">
-          Empleados{empresaNombre ? ` - ${empresaNombre}` : ""}
+          Usuarios {empresaNombre ? ` - ${empresaNombre}` : ""}
         </h2>
         <button
-          onClick={() => create("empleados")}
+          onClick={() => create("users")}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition"
         >
           Crear
@@ -93,7 +93,7 @@ export const EmpleadosList = () => {
                     onClick={() => {
                       const id = row.original.id;
 
-                      if (id !== undefined) show("empleados", id.toString());
+                      if (id !== undefined) show("users", id.toString());
                     }}
                     title="Ver detalle"
                   >
@@ -103,7 +103,7 @@ export const EmpleadosList = () => {
                     className="text-blue-600 hover:text-blue-900"
                     onClick={() => {
                       const id = row.original.id;
-                      if (id !== undefined) edit("empleados", id.toString());
+                      if (id !== undefined) edit("users", id.toString());
                     }}
                     title="Actualizar"
                   >

@@ -23,3 +23,9 @@ export type RoutePath =
   | `/empleados/edit/${string}`
   | `/empleados/show/${string}`
   | "/instituciones";
+
+export type Identity = {
+  id: string | null;
+  name: string | null;
+  institucion_id: string | null;
+};

@@ -6,21 +6,28 @@ import {
   EmpleadosList,
   EmpleadosShow,
 } from "../pages/empleados";
-import { NavigateToResource } from "@refinedev/react-router";
-import { InstitucionesList } from "../pages/instituciones/List";
+import { UsuariosList } from "../pages/usuarios/list";
+import { UsuariosCreate } from "../pages/usuarios/create";
+import { UsuariosEdit } from "../pages/usuarios/edit";
+import { UsuariosShow } from "../pages/usuarios/show";
+import { Home } from "@/pages/home/Index";
+import { ROUTES } from "./config/constants";
 
 export function AppRoutes() {
   return (
     <>
-      <Route index element={<NavigateToResource resource="/" />} />
-      <Route path="/empleados">
+      <Route index path="/" element={<Home />} />
+      <Route path={ROUTES.EMPLEADOS.LIST}>
         <Route index element={<EmpleadosList />} />
-        <Route path="create" element={<EmpleadosCreate />} />
-        <Route path="edit/:id" element={<EmpleadosEdit />} />
-        <Route path="show/:id" element={<EmpleadosShow />} />
+        <Route path={ROUTES.EMPLEADOS.CREATE} element={<EmpleadosCreate />} />
+        <Route path={ROUTES.EMPLEADOS.EDIT} element={<EmpleadosEdit />} />
+        <Route path={ROUTES.EMPLEADOS.SHOW} element={<EmpleadosShow />} />
       </Route>
-      <Route path="/instituciones">
-        <Route index element={<InstitucionesList />} />
+      <Route path={ROUTES.USUARIOS.LIST}>
+        <Route index element={<UsuariosList />} />
+        <Route path={ROUTES.USUARIOS.CREATE} element={<UsuariosCreate />} />
+        <Route path={ROUTES.USUARIOS.EDIT} element={<UsuariosEdit />} />
+        <Route path={ROUTES.USUARIOS.SHOW} element={<UsuariosShow />} />
       </Route>
       <Route path="*" element={<ErrorComponent />} />
     </>

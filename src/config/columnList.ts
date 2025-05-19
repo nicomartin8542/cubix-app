@@ -42,3 +42,22 @@ export const columnListEmpleados = [
     header: "Estado",
   },
 ];
+
+export const columnListUsuarios = [
+  {
+    id: "name",
+    accessorKey: "name",
+    header: "Apellido y Nombre",
+  },
+  {
+    id: "email",
+    accessorKey: "email",
+    header: "Correo",
+  },
+
+  {
+    id: "dni",
+    accessorKey: "dni",
+    header: "DNI",
+  },
+];

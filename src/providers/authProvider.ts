@@ -1,6 +1,7 @@
 import { AuthProvider } from "@refinedev/core";
 import { supabaseClient } from "../utility";
 import { handleResponse } from "../utility/helpers";
+import { Identity } from "@/types";
 
 const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
@@ -125,7 +126,7 @@ const authProvider: AuthProvider = {
     return null;
   },
 
-  getIdentity: async () => {
+  getIdentity: async (): Promise<Identity | null> => {
     const { data: user } = await supabaseClient.auth.getUser();
     const { data: userData } = await supabaseClient
       .from("users")
@@ -134,9 +135,9 @@ const authProvider: AuthProvider = {
       .single();
     if (user?.user) {
       return {
-        ...user.user,
-        ...userData,
-        name: user.user.email,
+        id: user.user.id,
+        name: user.user.email || "",
+        institucion_id: userData?.institucion_id || "",
       };
     }
     return null;

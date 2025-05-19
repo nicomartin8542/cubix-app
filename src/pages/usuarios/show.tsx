@@ -1,10 +1,28 @@
-import { useNavigation, useShow } from "@refinedev/core";
-import { BackIcon } from "@components/icons/BackIcon";
-import { IdentIcon } from "@components/icons/IdentIcon";
-import { ContactIcon } from "@components/icons/ContactIcon";
-import { JobIcon } from "@components/icons/JobIcon";
+import { useNavigation, useResource, useShow } from "@refinedev/core";
+import { BackIcon } from "../../components/icons/BackIcon";
+import { IdentIcon } from "../../components/icons/IdentIcon";
+import { ContactIcon } from "../../components/icons/ContactIcon";
+import { JobIcon } from "../../components/icons/JobIcon";
 
-export const EmpleadosShow = () => {
+// Componente auxiliar para mostrar un campo
+const DataField = ({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string | number | null;
+}) => (
+  <div className="flex flex-col mb-2">
+    <span className="text-xs font-semibold text-slate-500 uppercase mb-1">
+      {label}
+    </span>
+    <span className="text-base text-slate-800 bg-slate-50 rounded px-2 py-1 border border-slate-100">
+      {value ?? <span className="text-slate-300">-</span>}
+    </span>
+  </div>
+);
+
+export const UsuariosShow = () => {
   const { edit, list } = useNavigation();
   const { query } = useShow();
   const { data } = query;
@@ -27,7 +45,7 @@ export const EmpleadosShow = () => {
           <button
             className="flex items-center gap-2 px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 cursor-pointer shadow-xl text-base transition focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-slate-300 disabled:cursor-not-allowed"
             onClick={() =>
-              record?.id !== undefined && edit("empleados", record?.id)
+              record?.id !== undefined && edit("empleados", record.id)
             }
             disabled={record?.id === undefined}
           >
@@ -94,21 +112,3 @@ export const EmpleadosShow = () => {
     </div>
   );
 };
-
-// Componente auxiliar para mostrar un campo
-const DataField = ({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string | number | null;
-}) => (
-  <div className="flex flex-col mb-2">
-    <span className="text-xs font-semibold text-slate-500 uppercase mb-1">
-      {label}
-    </span>
-    <span className="text-base text-slate-800 bg-slate-50 rounded px-2 py-1 border border-slate-100">
-      {value ?? <span className="text-slate-300">-</span>}
-    </span>
-  </div>
-);

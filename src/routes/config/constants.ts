@@ -5,13 +5,18 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   UPDATE_PASSWORD: "/update-password",
   EMPLEADOS: {
-    LIST: "/empleados",
-    CREATE: "/empleados/create",
-    EDIT: "/empleados/edit/:id",
-    SHOW: "/empleados/show/:id",
+    LIST: "/app/empleados",
+    CREATE: "/app/empleados/create",
+    EDIT: "/app/empleados/edit/:id",
+    SHOW: "/app/empleados/show/:id",
   },
-  INSTITUCIONES: {
-    LIST: "/instituciones",
+
+  USUARIOS: {
+    LIST: "/app/usuarios",
+    CREATE: "/app/usuarios/create",
+    EDIT: "/app/usuarios/edit/:id",
+    SHOW: "/app/usuarios/show/:id",
   },
+
   UNAUTHORIZED: "/unauthorized",
 } as const;

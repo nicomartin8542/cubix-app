@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import React, { useState } from "react";
-import { Sidebar } from "../components/Sidebar";
-import { Navbar } from "../components/Navbar";
+import { Sidebar } from "../components/dashboard/Sidebar";
+import { Navbar } from "../components/dashboard/Navbar";
 import { useGetIdentity } from "@refinedev/core";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {

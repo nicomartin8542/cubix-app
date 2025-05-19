@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { EmpleadoIcon } from "./icons/EmpleadoIcon";
+import { EmpleadoIcon } from "../icons/EmpleadoIcon";
 
 interface SidebarProps {
   collapsed: boolean;

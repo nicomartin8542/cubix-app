@@ -1,4 +1,4 @@
-import { ROUTES } from "@/routes/constants";
+import { ROUTES } from "@/routes/config/constants";
 import { ResourceProps } from "@refinedev/core";
 
 export const resources: ResourceProps[] = [

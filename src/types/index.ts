@@ -9,3 +9,17 @@ export type RoutesConfig = {
   public: AppRoute[];
   protected: AppRoute[];
 };
+
+export type RouteParams = {
+  id: string;
+};
+
+export type RoutePath =
+  | "/"
+  | "/login"
+  | "/register"
+  | "/empleados"
+  | "/empleados/create"
+  | `/empleados/edit/${string}`
+  | `/empleados/show/${string}`
+  | "/instituciones";

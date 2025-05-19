@@ -1,18 +1,18 @@
 // Importaciones agrupadas
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
-import { Authenticated, Refine } from "@refinedev/core";
+import { Refine } from "@refinedev/core";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { RefineKbarProvider } from "@refinedev/kbar";
 import { DevtoolsProvider } from "@refinedev/devtools";
-import routerBindings, { CatchAllNavigate } from "@refinedev/react-router";
+import routerBindings from "@refinedev/react-router";
 
 // Importaciones locales
 import { supabaseClient } from "./utility";
 import authProvider from "./providers/authProvider";
 import { Layout } from "./layout";
-import { resources } from "./config/resources";
+import { resources } from "./routes/config/resources";
 import { AppRoutes, AuthRoutes } from "./routes";
-import { ROUTES } from "./routes/constants";
+import { AuthenticatedLayout } from "./routes/components/AuthenticacedLayout";
 import "./App.css";
 
 function App() {
@@ -36,19 +36,17 @@ function App() {
             <Routes>
               <Route
                 element={
-                  <Authenticated
-                    key="authenticated-inner"
-                    fallback={<CatchAllNavigate to={ROUTES.LOGIN} />}
-                  >
+                  <AuthenticatedLayout>
                     <Layout>
                       <Outlet />
                     </Layout>
-                  </Authenticated>
+                  </AuthenticatedLayout>
                 }
               >
                 {AppRoutes()}
               </Route>
 
+              {/* Rutas publicas */}
               {AuthRoutes()}
             </Routes>
           </Refine>

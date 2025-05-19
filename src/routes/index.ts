@@ -2,4 +2,4 @@
 export * from "@/routes/AppRoutes";
 export * from "@/routes/AuthRoutes";
 export * from "@/types";
-export * from "@/routes/constants";
+export * from "@/routes/config/constants";

@@ -13,4 +13,5 @@ export const ROUTES = {
   INSTITUCIONES: {
     LIST: "/instituciones",
   },
+  UNAUTHORIZED: "/unauthorized",
 } as const;

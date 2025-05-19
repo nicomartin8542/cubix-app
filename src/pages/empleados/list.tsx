@@ -5,7 +5,7 @@ import React from "react";
 import { ViewIcon } from "../../components/icons/ViewIcon";
 import { UpdateIcon } from "../../components/icons/UpdateIcon";
 import { columnListEmpleados } from "../../config/columnList";
-import { Spinner } from "../../components/Spinner";
+import { Spinner } from "@/components/ui/Spinner";
 
 export const EmpleadosList = () => {
   const { edit, show, create } = useNavigation();

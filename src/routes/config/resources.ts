@@ -25,4 +25,11 @@ export const resources: ResourceProps[] = [
     show: ROUTES.USUARIOS.SHOW,
     meta: { canDelete: true, label: "Usuarios" },
   },
+
+  {
+    name: "account",
+    list: ROUTES.ACCOUNT.LIST,
+    edit: ROUTES.ACCOUNT.EDIT,
+    meta: { label: "Mi Cuenta" },
+  },
 ];

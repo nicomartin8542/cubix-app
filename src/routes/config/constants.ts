@@ -18,5 +18,10 @@ export const ROUTES = {
     SHOW: "/app/usuarios/show/:id",
   },
 
+  ACCOUNT: {
+    LIST: "/app/account",
+    EDIT: "/app/account/edit",
+  },
+
   UNAUTHORIZED: "/unauthorized",
 } as const;

@@ -12,6 +12,8 @@ import { UsuariosEdit } from "../pages/usuarios/edit";
 import { UsuariosShow } from "../pages/usuarios/show";
 import { Home } from "@/pages/home/Index";
 import { ROUTES } from "./config/constants";
+import { MisDatos } from "../pages/account/list";
+import { AccountEdit } from "../pages/account/edit";
 
 export function AppRoutes() {
   return (
@@ -28,6 +30,10 @@ export function AppRoutes() {
         <Route path={ROUTES.USUARIOS.CREATE} element={<UsuariosCreate />} />
         <Route path={ROUTES.USUARIOS.EDIT} element={<UsuariosEdit />} />
         <Route path={ROUTES.USUARIOS.SHOW} element={<UsuariosShow />} />
+      </Route>
+      <Route path={ROUTES.ACCOUNT.LIST}>
+        <Route index element={<MisDatos />} />
+        <Route path={ROUTES.ACCOUNT.EDIT} element={<AccountEdit />} />
       </Route>
       <Route path="*" element={<ErrorComponent />} />
     </>

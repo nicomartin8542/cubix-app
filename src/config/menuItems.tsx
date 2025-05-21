@@ -16,7 +16,7 @@ export const menuItems = [
     submenu: [{ name: "Sueldo", path: "/sueldo" }],
   },
   {
-    name: "Instituciones",
+    name: "Institucion",
     icon: <InstitucionIcon />,
     submenu: [
       { name: "Empleados", path: ROUTES.EMPLEADOS.LIST },

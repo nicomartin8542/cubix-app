@@ -130,14 +130,15 @@ const authProvider: AuthProvider = {
     const { data: user } = await supabaseClient.auth.getUser();
     const { data: userData } = await supabaseClient
       .from("users")
-      .select("institucion_id")
+      .select("institucion_id, name")
       .eq("id", user?.user?.id)
       .single();
     if (user?.user) {
       return {
         id: user.user.id,
-        name: user.user.email || "",
+        email: user.user.email || "",
         institucion_id: userData?.institucion_id || "",
+        name: userData?.name || "",
       };
     }
     return null;

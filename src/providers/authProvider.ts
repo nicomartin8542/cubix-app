@@ -37,7 +37,7 @@ const authProvider: AuthProvider = {
     return { error };
   },
 
-  register: async ({ email, password, name, dni }) => {
+  register: async ({ email, password, name, dni, institucion_id }) => {
     try {
       const { data, error } = await supabaseClient.auth.signUp({
         email,
@@ -47,11 +47,10 @@ const authProvider: AuthProvider = {
       if (data?.user) {
         const { error: updateError } = await supabaseClient
           .from("users")
-          .update({ name, dni })
+          .update({ name, dni, institucion_id })
           .eq("id", data.user.id);
         if (updateError) return handleResponse(false, { error: updateError });
       }
-      if (data) return handleResponse(true, { redirectTo: "/" });
     } catch (error: any) {
       return handleResponse(false, { error });
     }

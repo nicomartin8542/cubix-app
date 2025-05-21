@@ -15,8 +15,51 @@ type UserProfile = Identity & {
   roles?: string[];
 };
 
+// Componente para mostrar un campo de información
+const InfoField = ({ label, value, icon }: { label: string; value?: string | null; icon?: React.ReactNode }) => (
+  <div className="mb-4">
+    <div className="flex items-center gap-2 mb-1">
+      {icon && <span className="text-indigo-500">{icon}</span>}
+      <label className="text-sm font-medium text-gray-700">{label}</label>
+    </div>
+    <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-800 shadow-sm">
+      {value ? (
+        <span className="font-medium">{value}</span>
+      ) : (
+        <span className="text-slate-400 italic">No disponible</span>
+      )}
+    </div>
+  </div>
+);
+
+// Iconos para los campos
+const UserIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+  </svg>
+);
+
+const EmailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+  </svg>
+);
+
+const DocumentIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+  </svg>
+);
+
+const BuildingIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H7a1 1 0 00-1 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
+  </svg>
+);
+
 export const MisDatos = () => {
-  const { data: user } = useGetIdentity<UserProfile>();
+  const { data: user, isLoading } = useGetIdentity<UserProfile>();
 
   // Mock data for demonstration - replace with actual user data
   const userData = {
@@ -37,125 +80,115 @@ export const MisDatos = () => {
     alert("Funcionalidad de cambio de contraseña en desarrollo");
   };
 
-  return (
-    <div className="max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Mis Datos</h1>
-        <div className="flex gap-2">
-          <button
-            onClick={handleChangePassword}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            <CandadoIcon />
-            Resetear Contraseña
-          </button>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100">
+        <div className="flex flex-col items-center justify-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+          <p className="text-indigo-700 font-medium">Cargando datos...</p>
         </div>
       </div>
+    );
+  }
 
-      {/* Main Card */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="p-6">
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Profile Picture Section */}
-            <div className="w-full md:w-1/3 flex flex-col items-center">
-              <div className="relative mb-4">
-                <div className="w-40 h-40 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-4 border-indigo-100">
-                  {userData.avatar ? (
-                    <img
-                      src={userData.avatar}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <CamaraIcon />
-                  )}
-                </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header Card */}
+        <div className="bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden mb-6">
+          {/* Header */}
+          <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-white tracking-tight">Mi Cuenta</h1>
+              <p className="text-indigo-100 text-sm mt-1">Información personal y configuración</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleChangePassword}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg font-medium hover:bg-white/20 transition focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <CandadoIcon />
+                Resetear Contraseña
+              </button>
+            </div>
+          </div>
+
+          {/* User Profile Header */}
+          <div className="bg-gradient-to-b from-indigo-500/10 to-white px-8 py-6 flex flex-col sm:flex-row items-center gap-6">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
+                {userData.avatar ? (
+                  <img
+                    src={userData.avatar}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <CamaraIcon />
+                )}
+              </div>
+              <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
+                <span className="inline-flex items-center justify-center w-6 h-6 bg-indigo-600 text-white rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
+                </span>
               </div>
             </div>
-
-            {/* User Information */}
-            <div className="flex-1 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nombre completo
-                  </label>
-                  <p className="text-gray-900 bg-gray-50 p-2 rounded">
-                    {userData.name}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    DNI
-                  </label>
-                  <p className="text-gray-900 bg-gray-50 p-2 rounded">
-                    {userData.dni}
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Correo electrónico
-                </label>
-                <p className="text-gray-900 bg-gray-50 p-2 rounded">
-                  {userData.email}
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Institución
-                </label>
-                <p className="text-gray-900 bg-gray-50 p-2 rounded">
-                  {userData.institution}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Estado
-                  </label>
+            <div className="text-center sm:text-left">
+              <h3 className="text-2xl font-bold text-gray-800">{userData.name}</h3>
+              <p className="text-indigo-600">{userData.email}</p>
+              <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  {userData.status}
+                </span>
+                {userData.roles.map((role, index) => (
                   <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      userData.status === "Activo"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
+                    key={index}
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800"
                   >
-                    {userData.status}
+                    {role}
                   </span>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Perfiles
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {userData.roles.map((role, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
-                      >
-                        {role}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
+            </div>
+          </div>
 
-              <div className="flex justify-end pt-4">
-                <Link
-                  to={ROUTES.ACCOUNT.EDIT}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center gap-2"
-                >
-                  <PencilIcon />
-                  Editar Perfil
-                </Link>
-              </div>
+          {/* Content */}
+          <div className="p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+              {/* Información Personal */}
+              <section className="mb-8 col-span-1">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+                  <UserIcon /> Información Personal
+                </h2>
+                <div className="space-y-2">
+                  <InfoField label="Nombre completo" value={userData.name} icon={<UserIcon />} />
+                  <InfoField label="DNI" value={userData.dni} icon={<DocumentIcon />} />
+                </div>
+              </section>
+
+              {/* Información de Contacto */}
+              <section className="mb-8 col-span-1">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+                  <EmailIcon /> Información de Contacto
+                </h2>
+                <div className="space-y-2">
+                  <InfoField label="Correo electrónico" value={userData.email} icon={<EmailIcon />} />
+                  <InfoField label="Institución" value={userData.institution} icon={<BuildingIcon />} />
+                </div>
+              </section>
+            </div>
+
+            {/* Botón de edición */}
+            <div className="flex justify-end pt-4 mt-4 border-t border-slate-100">
+              <Link
+                to={ROUTES.ACCOUNT.EDIT}
+                className="px-5 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2"
+              >
+                <PencilIcon />
+                Editar Perfil
+              </Link>
             </div>
           </div>
         </div>

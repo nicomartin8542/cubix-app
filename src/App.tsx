@@ -14,6 +14,7 @@ import { resources } from "./routes/config/resources";
 import { AppRoutes, AuthRoutes } from "./routes";
 import { AuthenticatedLayout } from "./routes/components/AuthenticacedLayout";
 import "./App.css";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   return (
@@ -33,22 +34,24 @@ function App() {
               projectId: "W5tKEH-NbMiVn-aLohjh",
             }}
           >
-            <Routes>
-              <Route
-                element={
-                  <AuthenticatedLayout>
-                    <Layout>
-                      <Outlet />
-                    </Layout>
-                  </AuthenticatedLayout>
-                }
-              >
-                {AppRoutes()}
-              </Route>
+            <UserProvider>
+              <Routes>
+                <Route
+                  element={
+                    <AuthenticatedLayout>
+                      <Layout>
+                        <Outlet />
+                      </Layout>
+                    </AuthenticatedLayout>
+                  }
+                >
+                  {AppRoutes()}
+                </Route>
 
-              {/* Rutas publicas */}
-              {AuthRoutes()}
-            </Routes>
+                {/* Rutas publicas */}
+                {AuthRoutes()}
+              </Routes>
+            </UserProvider>
           </Refine>
         </DevtoolsProvider>
       </RefineKbarProvider>

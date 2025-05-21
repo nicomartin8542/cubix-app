@@ -2,7 +2,12 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { menuItems } from "@/config/menuItems";
 import { CollapsedIcon } from "../icons/CollapsedIcon";
-import { CollapseSidebarIcon } from "../icons/CollapseSidebarIcon";
+import { BankIcon } from "../icons/BankIcon";
+import {
+  leftArrowIcon,
+  leftFlotantArrowIcon,
+  rightArrowIcon,
+} from "../icons/CollapseSidebarIcon";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -19,43 +24,71 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
 
   return (
     <aside
-      className={`bg-white shadow h-full flex flex-col transition-all duration-300 ${
-        collapsed ? "w-16" : "w-56"
-      } fixed md:static z-30`}
+      className={`bg-gradient-to-b from-indigo-600 to-indigo-800 h-full flex flex-col transition-all duration-300 ${
+        collapsed ? "w-16" : "w-64"
+      } fixed md:static z-30 shadow-lg`}
     >
-      <div className="relative flex items-center justify-between p-4 border-b">
-        <div
-          className={`w-full transition-all duration-300 ${
-            collapsed ? "px-1 hidden " : " md:block px-8"
+      {/* Header con logo y botón de colapsar */}
+      <div className="flex items-center justify-between h-16 px-2 border-b border-indigo-500/20">
+        <Link
+          to="/"
+          className={`flex items-center gap-2 py-2 ${
+            collapsed ? "mx-auto" : ""
           }`}
         >
-          <Link
-            to="/"
-            className="block w-full text-2xl font-bold text-indigo-600"
+          <div className="flex items-center justify-center w-8 h-8 bg-white rounded-lg shadow-md overflow-hidden">
+            <BankIcon />
+          </div>
+          {!collapsed && (
+            <span className="font-bold text-xl text-white tracking-tight">
+              CUBIX
+            </span>
+          )}
+        </Link>
+        {/* Botón para colapsar cuando está expandido */}
+        {!collapsed && (
+          <button
+            className="p-1.5 rounded-md hover:bg-indigo-500/30 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
+            onClick={onCollapse}
+            aria-label="Colapsar menú"
           >
-            CUBIX
-          </Link>
-        </div>
+            {leftArrowIcon()}
+          </button>
+        )}
+      </div>
+
+      {/* Botón para expandir cuando está colapsado */}
+      {collapsed && (
         <button
+          className="mx-auto mt-4 p-1.5 rounded-md hover:bg-indigo-500/30 focus:outline-none focus:ring-2 focus:ring-white/30 transition-colors"
           onClick={onCollapse}
-          className={`absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded hover:bg-gray-100 focus:outline-none bg-white bg-opacity-80 ${
-            collapsed ? "relative right-0" : ""
-          }`}
+          aria-label="Expandir menú"
         >
-          <CollapseSidebarIcon />
+          {rightArrowIcon()}
+        </button>
+      )}
+      {/* Botón flotante para dispositivos pequeños */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <button
+          className="p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
+          onClick={onCollapse}
+          aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
+        >
+          {leftFlotantArrowIcon(collapsed)}
         </button>
       </div>
-      <nav className="flex-1 mt-2 mr-1 ml-1">
-        <ul className="space-y-2 ">
+
+      <nav className="flex-1 mt-3 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-400/30 scrollbar-track-transparent text-white font-bold">
+        <ul className="space-y-1.5 ">
           {menuItems.map((item) => (
             <li key={item.name} className="relative group">
               {item.submenu ? (
                 <>
                   <button
                     onClick={() => handleToggleMenu(item.name)}
-                    className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200 hover:bg-indigo-50 hover:text-indigo-700 text-gray-700 ${
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white text-indigo-100 ${
                       item.submenu.some((sub) => location.pathname === sub.path)
-                        ? "bg-indigo-100 text-indigo-600 font-semibold"
+                        ? "bg-white/20 text-white font-medium shadow-sm"
                         : ""
                     } ${collapsed ? "justify-center" : ""}`}
                   >
@@ -73,14 +106,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
                   </button>
                   {/* Submenu */}
                   {!collapsed && openMenu === item.name && (
-                    <ul className="ml-6 mr-1 mt-1 space-y-1">
+                    <ul className="ml-7 pl-2 mt-1 space-y-1 border-l-2 border-indigo-300/30 py-1">
                       {item.submenu.map((sub) => (
                         <li key={sub.name}>
                           <Link
                             to={sub.path}
-                            className={`block px-4 py-2 rounded-lg transition-colors duration-200 hover:bg-indigo-50 hover:text-indigo-700 text-gray-700 ${
+                            className={`flex items-center px-3 py-2 rounded-md transition-all duration-200 hover:bg-white/10 hover:text-white text-indigo-200 ${
                               location.pathname === sub.path
-                                ? "bg-indigo-100 text-indigo-600 font-semibold"
+                                ? "bg-white/10 text-white font-medium"
                                 : ""
                             }`}
                           >
@@ -94,9 +127,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
               ) : (
                 <Link
                   to={item?.path || ""}
-                  className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200 hover:bg-indigo-50 hover:text-indigo-700 text-gray-700 ${
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white text-indigo-100 ${
                     location.pathname === item?.path
-                      ? "bg-indigo-100 text-indigo-600 font-semibold"
+                      ? "bg-white/20 text-white font-medium shadow-sm"
                       : ""
                   }`}
                 >

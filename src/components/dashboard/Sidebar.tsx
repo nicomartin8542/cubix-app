@@ -5,16 +5,19 @@ import { CollapsedIcon } from "../icons/CollapsedIcon";
 import { BankIcon } from "../icons/BankIcon";
 import {
   leftArrowIcon,
-  leftFlotantArrowIcon,
   rightArrowIcon,
 } from "../icons/CollapseSidebarIcon";
 
 interface SidebarProps {
   collapsed: boolean;
   onCollapse: () => void;
+  onClose?: () => void; // Prop para cerrar el sidebar en móvil
+  onMenuItemClick?: () => void; // Prop para manejar clics en elementos del menú
+  isMobile?: boolean;
+  isVisible?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse, onMenuItemClick, isMobile = false, isVisible = true }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = React.useState<string | null>(null);
 
@@ -26,7 +29,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
     <aside
       className={`bg-gradient-to-b from-indigo-600 to-indigo-800 h-full flex flex-col transition-all duration-300 ${
         collapsed ? "w-16" : "w-64"
-      } fixed md:static z-30 shadow-lg`}
+      } fixed md:relative z-30 shadow-lg ${
+        // Control de visibilidad en dispositivos móviles
+        isMobile && !isVisible ? "translate-x-[-100%]" : "translate-x-0"
+      }`}
+      onClick={(e) => e.stopPropagation()} // Evitar que los clics dentro del sidebar se propaguen al overlay
     >
       {/* Header con logo y botón de colapsar */}
       <div className="flex items-center justify-between h-16 px-2 border-b border-indigo-500/20">
@@ -67,16 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
           {rightArrowIcon()}
         </button>
       )}
-      {/* Botón flotante para dispositivos pequeños */}
-      <div className="md:hidden fixed bottom-4 right-4 z-50">
-        <button
-          className="p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
-          onClick={onCollapse}
-          aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
-        >
-          {leftFlotantArrowIcon(collapsed)}
-        </button>
-      </div>
+      {/* El overlay ahora se maneja desde el componente Layout */}
 
       <nav className="flex-1 mt-3 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-400/30 scrollbar-track-transparent text-white font-bold">
         <ul className="space-y-1.5 ">
@@ -111,6 +109,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
                         <li key={sub.name}>
                           <Link
                             to={sub.path}
+                            onClick={onMenuItemClick}
                             className={`flex items-center px-3 py-2 rounded-md transition-all duration-200 hover:bg-white/10 hover:text-white text-indigo-200 ${
                               location.pathname === sub.path
                                 ? "bg-white/10 text-white font-medium"
@@ -127,6 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
               ) : (
                 <Link
                   to={item?.path || ""}
+                  onClick={onMenuItemClick}
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white text-indigo-100 ${
                     location.pathname === item?.path
                       ? "bg-white/20 text-white font-medium shadow-sm"

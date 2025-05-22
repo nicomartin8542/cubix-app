@@ -16,6 +16,7 @@ const authProvider: AuthProvider = {
         .select("institucion_id")
         .eq("id", user?.user?.id)
         .single();
+      console.log(userData);
 
       if (userError || !userData?.institucion_id) {
         await supabaseClient.auth.signOut();
@@ -39,9 +40,11 @@ const authProvider: AuthProvider = {
 
   register: async ({ email, password, name, dni, institucion_id }) => {
     try {
-      const { data, error } = await supabaseClient.auth.signUp({
+      const { data, error } = await supabaseClient.auth.signInWithOtp({
         email,
-        password,
+        options: {
+          emailRedirectTo: "http://localhost:5173/update-password",
+        },
       });
       if (error) return handleResponse(false, { error });
       if (data?.user) {

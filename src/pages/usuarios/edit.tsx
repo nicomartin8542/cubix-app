@@ -54,22 +54,22 @@ export const UsuariosEdit = () => {
   return isLoading ? (
     <Spinner />
   ) : (
-    <div className="min-h-screen flex items-start justify-center px-4">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden">
+    <div className="min-h-screen flex items-start justify-center px-2 sm:px-4 py-4 sm:py-8">
+      <div className="relative w-full max-w-4xl bg-white rounded-xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-indigo-100 overflow-hidden">
         {/* Header */}
-        <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="bg-indigo-600 py-4 sm:py-6 px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight text-center sm:text-left">
               Editar usuario
             </h2>
-            <p className="text-indigo-100 text-sm mt-1">
+            <p className="text-indigo-100 text-xs sm:text-sm mt-1 text-center sm:text-left">
               Actualice los datos del usuario
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-center sm:justify-end">
             <button
               onClick={() => list("users")}
-              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition-all"
+              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all text-sm sm:text-base"
             >
               <BackIcon />
               Volver
@@ -78,24 +78,24 @@ export const UsuariosEdit = () => {
         </div>
 
         {/* User Profile Header */}
-        <div className="bg-gradient-to-b from-indigo-500/10 to-white px-8 py-6 flex flex-col sm:flex-row items-center gap-6">
-          <div className="bg-indigo-100 rounded-full p-4 h-24 w-24 flex items-center justify-center">
-            <span className="text-indigo-600 text-4xl font-bold">
+        <div className="bg-gradient-to-b from-indigo-500/10 to-white px-4 sm:px-8 py-4 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="bg-indigo-100 rounded-full p-3 sm:p-4 h-16 w-16 sm:h-24 sm:w-24 flex items-center justify-center">
+            <span className="text-indigo-600 text-2xl sm:text-4xl font-bold">
               {record?.name ? record.name.charAt(0).toUpperCase() : "U"}
             </span>
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="text-2xl font-bold text-gray-800">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-800">
               {record?.name || "Usuario"}
             </h3>
-            <p className="text-indigo-600">
+            <p className="text-indigo-600 text-sm sm:text-base">
               {record?.email || "Sin correo electrónico"}
             </p>
             <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                 Activo
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-xs sm:text-sm text-gray-500">
                 ID: {record?.id || "--"}
               </span>
             </div>
@@ -103,10 +103,10 @@ export const UsuariosEdit = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onFinish)} className="p-8">
+        <form onSubmit={handleSubmit(onFinish)} className="p-4 sm:p-6 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
             {/* Sección Identificación */}
-            <section className="mb-8 col-span-1">
+            <section className="mb-8 col-span-2 lg:col-span-1">
               <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
                 <IdentIcon /> Información Personal
               </h2>
@@ -243,7 +243,7 @@ export const UsuariosEdit = () => {
             </section>
 
             {/* Sección Contacto */}
-            <section className="mb-8 col-span-1">
+            <section className="mb-8 col-span-2 lg:col-span-1">
               <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
                 <ContactIcon /> Información de Contacto
               </h2>
@@ -366,10 +366,10 @@ export const UsuariosEdit = () => {
             </section>
 
             {/* Buttons */}
-            <div className="flex gap-4 mt-6 pt-4 border-t border-slate-100 col-span-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-100 col-span-2">
               <button
                 type="button"
-                className="flex-1 bg-white border border-slate-300 text-indigo-700 px-5 py-3 rounded-xl shadow-sm hover:bg-slate-50 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="sm:flex-1 bg-white border border-slate-300 text-indigo-700 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-sm hover:bg-slate-50 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm sm:text-base"
                 onClick={() => list("users")}
                 disabled={isSubmitting}
               >
@@ -377,13 +377,13 @@ export const UsuariosEdit = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-indigo-600 text-white px-5 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+                className="sm:flex-1 bg-indigo-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-md hover:bg-indigo-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                      className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

@@ -32,22 +32,22 @@ export const UsuariosCreate = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-start justify-center px-4">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden">
+    <div className="min-h-screen flex items-start justify-center px-2 sm:px-4 py-4 sm:py-8">
+      <div className="relative w-full max-w-4xl bg-white rounded-xl sm:rounded-3xl shadow-xl sm:shadow-2xl border border-indigo-100 overflow-hidden">
         {/* Header */}
-        <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="bg-indigo-600 py-4 sm:py-6 px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight text-center sm:text-left">
               Crear nuevo usuario
             </h2>
-            <p className="text-indigo-100 text-sm mt-1">
+            <p className="text-indigo-100 text-xs sm:text-sm mt-1 text-center sm:text-left">
               Complete los datos para registrar un nuevo usuario
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-center sm:justify-end">
             <button
               onClick={() => list("users")}
-              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition-all"
+              className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all text-sm sm:text-base"
             >
               <BackIcon />
               Volver
@@ -56,15 +56,21 @@ export const UsuariosCreate = () => {
         </div>
 
         {/* User Profile Header */}
-        <div className="bg-gradient-to-b from-indigo-500/10 to-white px-8 py-6 flex flex-col sm:flex-row items-center gap-6">
-          <div className="bg-indigo-100 rounded-full p-4 h-24 w-24 flex items-center justify-center">
-            <span className="text-indigo-600 text-4xl font-bold">U</span>
+        <div className="bg-gradient-to-b from-indigo-500/10 to-white px-4 sm:px-8 py-4 sm:py-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="bg-indigo-100 rounded-full p-3 sm:p-4 h-16 w-16 sm:h-24 sm:w-24 flex items-center justify-center">
+            <span className="text-indigo-600 text-2xl sm:text-4xl font-bold">
+              U
+            </span>
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="text-2xl font-bold text-gray-800">Nuevo Usuario</h3>
-            <p className="text-indigo-600">Complete el formulario</p>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-800">
+              Nuevo Usuario
+            </h3>
+            <p className="text-indigo-600 text-sm sm:text-base">
+              Complete el formulario
+            </p>
             <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                 Pendiente
               </span>
             </div>
@@ -72,14 +78,14 @@ export const UsuariosCreate = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onFinish)} className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+        <form onSubmit={handleSubmit(onFinish)} className="p-4 sm:p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-2">
             {/* Sección Identificación */}
-            <section className="mb-8 col-span-1">
-              <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+            <section className="mb-8 col-span-2 lg:col-span-1">
+              <h2 className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg font-bold text-indigo-700 mb-3 sm:mb-4 pb-2 border-b border-indigo-100">
                 <IdentIcon /> Información Personal
               </h2>
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Nombre */}
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-2">
@@ -98,7 +104,7 @@ export const UsuariosCreate = () => {
                       id="name"
                       type="text"
                       {...register("name", { required: "Campo obligatorio" })}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       placeholder="Ingrese nombre completo"
                       autoComplete="off"
                     />
@@ -134,7 +140,7 @@ export const UsuariosCreate = () => {
                           message: "Dirección de correo inválida",
                         },
                       })}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       placeholder="ejemplo@correo.com"
                       autoComplete="off"
                     />
@@ -170,7 +176,7 @@ export const UsuariosCreate = () => {
                           message: "DNI inválido (7-8 dígitos)",
                         },
                       })}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       placeholder="Ingrese DNI sin puntos"
                       autoComplete="off"
                     />
@@ -185,11 +191,11 @@ export const UsuariosCreate = () => {
             </section>
 
             {/* Sección Contacto */}
-            <section className="mb-8 col-span-1">
-              <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+            <section className="mb-6 sm:mb-8 col-span-2 lg:col-span-1">
+              <h2 className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg font-bold text-indigo-700 mb-3 sm:mb-4 pb-2 border-b border-indigo-100">
                 <ContactIcon /> Información de Contacto
               </h2>
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Teléfono */}
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-2">
@@ -208,7 +214,7 @@ export const UsuariosCreate = () => {
                       id="telefono"
                       type="text"
                       {...register("telefono")}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       placeholder="Ingrese número de teléfono"
                       autoComplete="off"
                     />
@@ -238,7 +244,7 @@ export const UsuariosCreate = () => {
                       id="direccion"
                       type="text"
                       {...register("direccion")}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       placeholder="Ingrese dirección"
                       autoComplete="off"
                     />
@@ -268,7 +274,7 @@ export const UsuariosCreate = () => {
                       id="fecha_nacimiento"
                       type="date"
                       {...register("fecha_nacimiento")}
-                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-base transition-all placeholder:text-slate-400"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 text-sm sm:text-base transition-all placeholder:text-slate-400"
                       autoComplete="off"
                     />
                   </div>
@@ -282,10 +288,10 @@ export const UsuariosCreate = () => {
             </section>
 
             {/* Buttons */}
-            <div className="flex gap-4 mt-6 pt-4 border-t border-slate-100 col-span-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-100 col-span-2">
               <button
                 type="button"
-                className="flex-1 bg-white border border-slate-300 text-indigo-700 px-5 py-3 rounded-xl shadow-sm hover:bg-slate-50 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="sm:flex-1 bg-white border border-slate-300 text-indigo-700 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-sm hover:bg-slate-50 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-sm sm:text-base"
                 onClick={() => list("users")}
                 disabled={isLoading}
               >
@@ -293,13 +299,13 @@ export const UsuariosCreate = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-indigo-600 text-white px-5 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+                className="sm:flex-1 bg-indigo-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-md hover:bg-indigo-700 transition font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base"
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <>
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                      className="animate-spin -ml-1 mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

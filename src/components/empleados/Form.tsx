@@ -3,16 +3,16 @@ import { IdentIcon } from "../../components/icons/IdentIcon";
 import { ContactIcon } from "../../components/icons/ContactIcon";
 import { JobIcon } from "../../components/icons/JobIcon";
 
+type FormValues = Record<string, unknown>;
+
 interface FormEmpleadoProps {
-  register: any;
-  errors: any;
-  handleSubmit: (
-    onSubmit: (values: any) => void
-  ) => (e?: React.BaseSyntheticEvent) => void;
-  onSubmit: (values: any) => void;
-  defaultValues?: any;
+  register: any; // Mantenemos any para evitar problemas de compatibilidad
+  errors: any; // Mantenemos any para evitar problemas de compatibilidad
+  handleSubmit: (onSubmit: (values: FormValues) => void) => (e?: React.BaseSyntheticEvent) => void;
+  onSubmit: (values: FormValues) => void;
+  defaultValues?: FormValues;
   isLoading?: boolean;
-  formtype?: any;
+  formtype?: string;
 }
 
 export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
@@ -28,15 +28,15 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex-1 flex flex-col gap-10 pt-16 pb-8 px-4 sm:px-8"
+      className="flex-1 flex flex-col gap-6 sm:gap-10 pt-8 sm:pt-16 pb-8 px-2 sm:px-8"
     >
       {/* Sección 1: Identificación */}
-      <section id="seccion-identificacion" className="mb-6 ">
-        <h2 className="text-2xl font-extrabold text-indigo-700 mb-6 flex items-center gap-3">
+      <section id="seccion-identificacion" className="mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-indigo-700 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
           <IdentIcon />
           Identificación
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block mb-1 font-semibold text-indigo-700 text-base">
               CUIL
@@ -45,7 +45,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={11}
               {...register("nro_cuil", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 20123456783"
             />
             <span className="text-red-500 text-xs">
@@ -58,7 +58,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             </label>
             <select
               {...register("tpo_doc", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             >
               <option value="">Seleccione...</option>
               <option value="1">DNI</option>
@@ -77,7 +77,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             <input
               type="number"
               {...register("nro_doc", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 12345678"
             />
             <span className="text-red-500 text-xs">
@@ -92,7 +92,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("ape_nom", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: Juan Pérez"
             />
             <span className="text-red-500 text-xs">
@@ -105,7 +105,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             </label>
             <select
               {...register("sexo", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             >
               <option value="">Seleccione...</option>
               <option value="M">Masculino</option>
@@ -123,7 +123,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             <input
               type="date"
               {...register("fecha_nac", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             />
             <span className="text-red-500 text-xs">
               {errors?.fecha_nac?.message as string}
@@ -135,7 +135,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             </label>
             <select
               {...register("est_civil", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             >
               <option value="">Seleccione...</option>
               <option value="soltero">Soltero/a</option>
@@ -151,8 +151,8 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
         </div>
       </section>
       {/* Sección 2: Contacto y Domicilio */}
-      <section id="seccion-contacto" className="mb-6 scroll-mt-32">
-        <h2 className="text-2xl font-extrabold text-indigo-700 mb-6 flex items-center gap-3">
+      <section id="seccion-contacto" className="mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-indigo-700 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
           <ContactIcon />
           Contacto y Domicilio
         </h2>
@@ -165,7 +165,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="email"
               maxLength={100}
               {...register("email", { required: "Campo obligatorio" })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: correo@ejemplo.com"
             />
             <span className="text-red-500 text-xs">
@@ -180,7 +180,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("tel")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 299-1234567"
             />
           </div>
@@ -192,7 +192,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("cel")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 299-7654321"
             />
           </div>
@@ -204,7 +204,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("cod_pos")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 8300"
             />
           </div>
@@ -216,7 +216,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("nom_call")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: Belgrano"
             />
           </div>
@@ -228,7 +228,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               <input
                 type="number"
                 {...register("nro_call")}
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
                 placeholder="Ej: 123"
               />
             </div>
@@ -239,7 +239,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               <input
                 type="number"
                 {...register("nro_piso")}
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
                 placeholder="Ej: 2"
               />
             </div>
@@ -250,7 +250,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               <input
                 type="number"
                 {...register("nro_dpto")}
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
                 placeholder="Ej: A"
               />
             </div>
@@ -258,8 +258,8 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
         </div>
       </section>
       {/* Sección 3: Laboral y Bancario */}
-      <section id="seccion-laboral" className="scroll-mt-32">
-        <h2 className="text-2xl font-extrabold text-indigo-700 mb-6 flex items-center gap-3">
+      <section id="seccion-laboral" className="scroll-mt-16 sm:scroll-mt-32">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-indigo-700 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
           <JobIcon />
           Laboral y Bancario
         </h2>
@@ -272,7 +272,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("nro_cbu")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: 2850590940090418135201"
             />
           </div>
@@ -283,7 +283,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             <input
               type="date"
               {...register("fecha_de_baja")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             />
           </div>
           <div className="hidden">
@@ -294,7 +294,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("status")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Ej: Activo"
             />
           </div>
@@ -304,7 +304,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
             </label>
             <select
               {...register("posee_litis")}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
             >
               <option value="">Seleccione...</option>
               <option value="1">Sí</option>
@@ -319,7 +319,7 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
               type="text"
               maxLength={100}
               {...register("enviado_sin_cbu", {})}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-base transition-all"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-slate-50 text-sm sm:text-base transition-all"
               placeholder="Obligatorio"
             />
             <span className="text-red-500 text-xs">
@@ -329,10 +329,10 @@ export const FormEmpleado: React.FC<FormEmpleadoProps> = ({
         </div>
       </section>
       {/* Botón de guardar */}
-      <div className="lg:col-span-3 flex justify-end mt-8">
+      <div className="lg:col-span-3 flex justify-center sm:justify-end mt-6 sm:mt-8">
         <button
           type="submit"
-          className="flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 cursor-pointer shadow-xl text-lg transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 bg-indigo-600 text-white rounded-lg sm:rounded-xl font-bold hover:bg-indigo-700 cursor-pointer shadow-lg sm:shadow-xl text-base sm:text-lg transition focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto max-w-xs"
           disabled={isLoading}
         >
           <span role="img" aria-label="Guardar">

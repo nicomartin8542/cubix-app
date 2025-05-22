@@ -1,4 +1,4 @@
-export const BankIcon = () => {
+export const BankIcon = ({ ...props }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,11 +6,16 @@ export const BankIcon = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="white"
+      stroke={props.stroke || "white"}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="icon icon-tabler icons-tabler-outline icon-tabler-building-bank bg-gradient-to-b from-indigo-600 to-indigo-800 size-11"
+      className={`icon icon-tabler icons-tabler-outline icon-tabler-building-bank ${
+        props.className
+          ? props.className
+          : "bg-gradient-to-b from-indigo-600 to-indigo-800 size-11"
+      }`}
+      // className={`icon icon-tabler icons-tabler-outline icon-tabler-building-bank bg-gradient-to-b from-indigo-600 to-indigo-800 size-11`}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M3 21l18 0" />

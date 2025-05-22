@@ -1,7 +1,7 @@
-export const UserIcon = () => (
+export const UserIcon = ({ ...props }: any) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-4 w-4"
+    {...props}
     viewBox="0 0 20 20"
     fill="currentColor"
   >
@@ -66,10 +66,10 @@ export const CalendarIcon = () => (
   </svg>
 );
 
-export const HomeIcon = () => (
+export const HomeIcon = ({ ...props }: any) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-4 w-4"
+    {...props}
     viewBox="0 0 20 20"
     fill="currentColor"
   >

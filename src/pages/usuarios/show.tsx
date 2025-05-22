@@ -1,8 +1,12 @@
 import { useNavigation, useShow, useForgotPassword } from "@refinedev/core";
-import { BackIcon } from "../../components/icons/BackIcon";
 import { IdentIcon } from "../../components/icons/IdentIcon";
 import { ContactIcon } from "../../components/icons/ContactIcon";
 import { JobIcon } from "../../components/icons/JobIcon";
+import { BackIcon } from "../../components/icons/BackIcon";
+import { Spinner } from "@/components/ui/Spinner";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Modal } from "@/components/usuarios/Modal";
 
 // Componente auxiliar para mostrar un campo
 const DataField = ({
@@ -90,177 +94,201 @@ export const UsuariosShow = () => {
   const { query } = useShow({
     resource: "users",
   });
-  const { mutate: forgotPassword, isLoading: isResetting } = useForgotPassword();
+  const { mutate: forgotPassword, isLoading: isResetting } =
+    useForgotPassword();
 
   const { data, isLoading } = query;
   const record = data?.data;
-  
+
+  // Estado para controlar la visibilidad del modal
+  const [showModal, setShowModal] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
+
+  // Cierra el modal después de 5 segundos si fue exitoso
+  useEffect(() => {
+    if (resetSuccess) {
+      const timer = setTimeout(() => {
+        setShowModal(false);
+        setResetSuccess(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [resetSuccess]);
+
   const handleResetPassword = () => {
     if (record?.email) {
       forgotPassword({ email: record.email });
-      alert("Se ha enviado un correo para restablecer la contraseña");
+      setResetSuccess(true);
+      setShowModal(true);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-          <p className="text-indigo-700 font-medium">Cargando datos...</p>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 ">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden">
-        {/* Header */}
-        <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
-              Detalles del usuario
-            </h2>
-            <p className="text-indigo-100 text-sm mt-1">
-              Información completa del usuario
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-medium hover:bg-white/20 transition focus:outline-none focus:ring-2 focus:ring-white/50"
-              onClick={() => list("users")}
-            >
-              <span className="text-lg">
-                <BackIcon />
-              </span>
-              Volver
-            </button>
-            <button
-              onClick={handleResetPassword}
-              className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-all"
-              disabled={isResetting}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-              </svg>
-              {isResetting ? "Procesando..." : "Resetear contraseña"}
-            </button>
-            <button
-              onClick={() => record?.id && edit("users", record.id)}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-all"
-              disabled={!record?.id}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-              </svg>
-              Editar
-            </button>
-          </div>
-        </div>
+    <>
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        resetSuccess={resetSuccess}
+        record={record}
+      />
 
-        {/* User Profile Header */}
-        <div className="bg-gradient-to-b from-indigo-500/10 to-white px-8 py-6 flex flex-col sm:flex-row items-center gap-6">
-          <div className="bg-indigo-100 rounded-full p-4 h-24 w-24 flex items-center justify-center">
-            <span className="text-indigo-600 text-4xl font-bold">
-              {record?.name ? record.name.charAt(0).toUpperCase() : "U"}
-            </span>
+      <div className="min-h-screen flex items-center justify-center px-4 ">
+        <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden">
+          {/* Header */}
+          <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">
+                Detalles del usuario
+              </h2>
+              <p className="text-indigo-100 text-sm mt-1">
+                Información completa del usuario
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-lg font-medium hover:bg-white/20 transition focus:outline-none focus:ring-2 focus:ring-white/50"
+                onClick={() => list("users")}
+              >
+                <span className="text-lg">
+                  <BackIcon />
+                </span>
+                Volver
+              </button>
+              <button
+                onClick={handleResetPassword}
+                className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-all"
+                disabled={isResetting}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {isResetting ? "Procesando..." : "Resetear contraseña"}
+              </button>
+              <button
+                onClick={() => record?.id && edit("users", record.id)}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-all"
+                disabled={!record?.id}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+                Editar
+              </button>
+            </div>
           </div>
-          <div className="text-center sm:text-left">
-            <h3 className="text-2xl font-bold text-gray-800">
-              {record?.name || "Usuario"}
-            </h3>
-            <p className="text-indigo-600">
-              {record?.email || "Sin correo electrónico"}
-            </p>
-            <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                Activo
+
+          {/* User Profile Header */}
+          <div className="bg-gradient-to-b from-indigo-500/10 to-white px-8 py-6 flex flex-col sm:flex-row items-center gap-6">
+            <div className="bg-indigo-100 rounded-full p-4 h-24 w-24 flex items-center justify-center">
+              <span className="text-indigo-600 text-4xl font-bold">
+                {record?.name ? record.name.charAt(0).toUpperCase() : "U"}
               </span>
-              <span className="text-sm text-gray-500">
-                ID: {record?.id || "--"}
-              </span>
+            </div>
+            <div className="text-center sm:text-left">
+              <h3 className="text-2xl font-bold text-gray-800">
+                {record?.name || "Usuario"}
+              </h3>
+              <p className="text-indigo-600">
+                {record?.email || "Sin correo electrónico"}
+              </p>
+              <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Activo
+                </span>
+                <span className="text-sm text-gray-500">
+                  ID: {record?.id || "--"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+              {/* Sección Identificación */}
+              <section className="mb-8 col-span-1">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+                  <IdentIcon /> Información Personal
+                </h2>
+                <div className="space-y-2">
+                  <DataField
+                    label="Nombre completo"
+                    value={record?.name}
+                    icon={<UserIcon />}
+                  />
+                  <DataField
+                    label="DNI"
+                    value={record?.dni}
+                    icon={<DocumentIcon />}
+                  />
+                  <DataField
+                    label="Fecha de Nacimiento"
+                    value={record?.fecha_nacimiento}
+                  />
+                </div>
+              </section>
+
+              {/* Sección Contacto */}
+              <section className="mb-8 col-span-1">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+                  <ContactIcon /> Información de Contacto
+                </h2>
+                <div className="space-y-2">
+                  <DataField
+                    label="Email"
+                    value={record?.email}
+                    icon={<EmailIcon />}
+                  />
+                  <DataField
+                    label="Teléfono"
+                    value={record?.telefono}
+                    icon={<PhoneIcon />}
+                  />
+                  <DataField label="Dirección" value={record?.direccion} />
+                </div>
+              </section>
+
+              {/* Sección Adicional */}
+              <section className="col-span-2">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
+                  <JobIcon /> Información Adicional
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                  <DataField
+                    label="Fecha de Registro"
+                    value={record?.createdAt}
+                  />
+                  <DataField
+                    label="Última Actualización"
+                    value={record?.updatedAt}
+                  />
+                  <DataField label="Rol" value={record?.role || "Usuario"} />
+                  <DataField
+                    label="Estado"
+                    value={record?.status || "Activo"}
+                  />
+                </div>
+              </section>
             </div>
           </div>
         </div>
-
-        {/* Content */}
-        <div className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-            {/* Sección Identificación */}
-            <section className="mb-8 col-span-1">
-              <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
-                <IdentIcon /> Información Personal
-              </h2>
-              <div className="space-y-2">
-                <DataField
-                  label="Nombre completo"
-                  value={record?.name}
-                  icon={<UserIcon />}
-                />
-                <DataField
-                  label="DNI"
-                  value={record?.dni}
-                  icon={<DocumentIcon />}
-                />
-                <DataField
-                  label="Fecha de Nacimiento"
-                  value={record?.birthdate}
-                />
-              </div>
-            </section>
-
-            {/* Sección Contacto */}
-            <section className="mb-8 col-span-1">
-              <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
-                <ContactIcon /> Información de Contacto
-              </h2>
-              <div className="space-y-2">
-                <DataField
-                  label="Email"
-                  value={record?.email}
-                  icon={<EmailIcon />}
-                />
-                <DataField
-                  label="Teléfono"
-                  value={record?.phone}
-                  icon={<PhoneIcon />}
-                />
-                <DataField label="Dirección" value={record?.address} />
-              </div>
-            </section>
-
-            {/* Sección Adicional */}
-            <section className="col-span-2">
-              <h2 className="flex items-center gap-3 text-lg font-bold text-indigo-700 mb-4 pb-2 border-b border-indigo-100">
-                <JobIcon /> Información Adicional
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                <DataField
-                  label="Fecha de Registro"
-                  value={record?.createdAt}
-                />
-                <DataField
-                  label="Última Actualización"
-                  value={record?.updatedAt}
-                />
-                <DataField label="Rol" value={record?.role || "Usuario"} />
-                <DataField label="Estado" value={record?.status || "Activo"} />
-              </div>
-            </section>
-          </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 };

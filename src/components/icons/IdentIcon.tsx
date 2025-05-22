@@ -1,6 +1,6 @@
 import React from "react";
 
-export const IdentIcon = ({ props }: any) => {
+export const IdentIcon = ({ ...props }: any) => {
   return (
     <>
       <svg
@@ -13,7 +13,7 @@ export const IdentIcon = ({ props }: any) => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className={`icon icon-tabler icons-tabler-outline icon-tabler-user-scan ${props} size-10`}
+        className={`icon icon-tabler icons-tabler-outline icon-tabler-user-scan size-10 ${props}`}
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />

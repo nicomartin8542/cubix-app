@@ -15,6 +15,7 @@ import {
 } from "../../components/icons/EditIcons";
 
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const UsuariosEdit = () => {
   const { list } = useNavigation();
@@ -34,12 +35,17 @@ export const UsuariosEdit = () => {
     },
   });
 
-  const onFinish = (values: Record<string, unknown>) => {
-    // Asegurarse de que se mantenga el ID de la institución del usuario actual
-    if (user?.institucion_id) {
-      values.institucion_id = user.institucion_id;
+  const onFinish = async (values: Record<string, unknown>) => {
+    try {
+      // Asegurarse de que se mantenga el ID de la institución del usuario actual
+      if (user?.institucion_id) {
+        values.institucion_id = user.institucion_id;
+      }
+      await refineOnFinish(values);
+      toast.success("Usuario actualizado correctamente");
+    } catch (error) {
+      toast.error("Error al actualizar el usuario");
     }
-    refineOnFinish(values);
   };
 
   const { data, isLoading } = query || {};
@@ -48,7 +54,7 @@ export const UsuariosEdit = () => {
   return isLoading ? (
     <Spinner />
   ) : (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-start justify-center px-4">
       <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-indigo-100 overflow-hidden">
         {/* Header */}
         <div className="bg-indigo-600 py-6 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -330,7 +336,7 @@ export const UsuariosEdit = () => {
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-indigo-500">
-                      <HomeIcon />
+                      <HomeIcon className="size-5" />
                     </span>
                     <label
                       htmlFor="direccion"

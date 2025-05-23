@@ -16,7 +16,7 @@ const authProvider: AuthProvider = {
         .select("institucion_id")
         .eq("id", user?.user?.id)
         .single();
-      console.log(userData);
+      console.log(user);
 
       if (userError || !userData?.institucion_id) {
         await supabaseClient.auth.signOut();
@@ -38,21 +38,38 @@ const authProvider: AuthProvider = {
     return { error };
   },
 
-  register: async ({ email, password, name, dni, institucion_id }) => {
+  register: async ({ email, name, dni, institucion_id }) => {
     try {
+      const { data: existingUser } = await supabaseClient
+        .from("users")
+        .select("id")
+        .eq("email", email)
+        .single();
+
+      let emailError: string | null = null;
+
+      if (existingUser) {
+        console.log("User already exists");
+        emailError = "El usuario ya existe.";
+        return handleResponse(false, { error: { message: emailError } });
+      }
+
       const { data, error } = await supabaseClient.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: "http://localhost:5173/update-password",
+          emailRedirectTo: `${window.location.origin}/update-password`,
         },
       });
+
       if (error) return handleResponse(false, { error });
+
       if (data?.user) {
         const { error: updateError } = await supabaseClient
           .from("users")
           .update({ name, dni, institucion_id })
-          .eq("id", data.user.id);
+          .eq("id", data?.user?.id);
         if (updateError) return handleResponse(false, { error: updateError });
+        return handleResponse(true);
       }
     } catch (error: any) {
       return handleResponse(false, { error });
@@ -130,6 +147,7 @@ const authProvider: AuthProvider = {
 
   getIdentity: async (): Promise<Identity | null> => {
     const { data: user } = await supabaseClient.auth.getUser();
+    if (!user?.user?.id) return null;
     const { data: userData } = await supabaseClient
       .from("users")
       .select("institucion_id, name")

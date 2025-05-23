@@ -5,13 +5,13 @@ import { Navbar } from "@/components/dashboard/Navbar";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useLogout } from "@refinedev/core";
 import { useUser } from "@/context/UserContext";
-import { leftFlotantArrowIcon } from "@/components/icons/CollapseSidebarIcon";
+import { BotonFlotanteSid } from "@/components/ui/BotonFlotanteSid";
 
-export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+export const Layout: React.FC<PropsWithChildren> = () => {
   // Estado para controlar si el sidebar está visible (abierto) o no
   const [sidebarVisible, setSidebarVisible] = useState(() => {
     // En móviles, el sidebar está oculto por defecto
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
       return false;
     }
     // En desktop, usar la preferencia guardada o mostrar por defecto
@@ -26,7 +26,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   });
 
   const [isMobile, setIsMobile] = useState(() => {
-    return typeof window !== 'undefined' && window.innerWidth < 768;
+    return typeof window !== "undefined" && window.innerWidth < 768;
   });
 
   const { user } = useUser();
@@ -51,14 +51,14 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
       setCollapsed(!collapsed);
     }
   };
-  
+
   // Función específica para cerrar el sidebar en dispositivos móviles
   const handleCloseSidebar = () => {
     if (isMobile) {
       setSidebarVisible(false);
     }
   };
-  
+
   // Función para manejar los clics en los elementos del menú
   // Esta función se pasa al componente Sidebar
   const handleMenuItemClick = () => {
@@ -75,16 +75,15 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      
       // Solo colapsar automáticamente en pantallas pequeñas al cargar inicialmente
       // pero no cuando el usuario explícitamente cambia el estado
     };
-    
-    window.addEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
     // Ejecutar una vez al inicio para establecer el estado correcto
     handleResize();
-    
-    return () => window.removeEventListener('resize', handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const { mutate: logout } = useLogout();
@@ -94,41 +93,38 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     <div className="flex h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 overflow-hidden">
       {/* Overlay para cerrar el sidebar en dispositivos móviles */}
       {isMobile && sidebarVisible && (
-        <div 
-          className="fixed inset-0 bg-black/30 z-20" 
+        <div
+          className="fixed inset-0 bg-black/30 z-20"
           onClick={handleCloseSidebar}
           aria-label="Cerrar menú"
         />
       )}
-      
+
       {/* Sidebar - ahora con z-index más alto que el overlay */}
-      <Sidebar 
-        collapsed={collapsed} 
-        onCollapse={handleSidebarToggle} 
+      <Sidebar
+        collapsed={collapsed}
+        onCollapse={handleSidebarToggle}
         onClose={handleCloseSidebar}
         onMenuItemClick={handleMenuItemClick}
-        isMobile={isMobile} 
-        isVisible={isMobile ? sidebarVisible : true} 
+        isMobile={isMobile}
+        isVisible={isMobile ? sidebarVisible : true}
       />
-      
+
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <Navbar user={user || undefined} />
         <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
-          <div className="max-w-7xl mx-auto">{children ?? <Outlet />}</div>
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
-      
+
       {/* Botón flotante para dispositivos móviles - siempre visible */}
       {isMobile && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <button
-            className="p-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-white/50 transition-colors"
-            onClick={handleSidebarToggle}
-            aria-label={sidebarVisible ? "Ocultar menú" : "Mostrar menú"}
-          >
-            {leftFlotantArrowIcon(!sidebarVisible)}
-          </button>
-        </div>
+        <BotonFlotanteSid
+          handleSidebarToggle={handleSidebarToggle}
+          sidebarVisible={sidebarVisible}
+        />
       )}
     </div>
   );

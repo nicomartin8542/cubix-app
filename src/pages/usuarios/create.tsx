@@ -12,6 +12,7 @@ import {
   CalendarIcon,
   HomeIcon,
 } from "../../components/icons/EditIcons";
+import { toast } from "react-toastify";
 
 export const UsuariosCreate = () => {
   const { list } = useNavigation();
@@ -25,10 +26,20 @@ export const UsuariosCreate = () => {
   } = useForm();
 
   const onFinish = (values: Record<string, unknown>) => {
-    const password = "123456";
-    mutate({ ...values, password, institucion_id: user?.institucion_id });
-    reset();
-    list("usuarios");
+    mutate(
+      { ...values, institucion_id: user?.institucion_id },
+      {
+        onSuccess: (data) => {
+          if (!data?.success) {
+            toast.error(data?.error?.message || "Error al crear el usuario");
+            return;
+          }
+          toast.success("Usuario creado correctamente");
+          reset();
+          list("usuarios");
+        },
+      }
+    );
   };
 
   return (
